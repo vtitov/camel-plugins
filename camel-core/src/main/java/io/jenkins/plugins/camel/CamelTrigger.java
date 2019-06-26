@@ -34,6 +34,7 @@ import java.io.ObjectStreamException;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import static io.vavr.API.TODO;
@@ -283,6 +284,7 @@ public class CamelTrigger extends Trigger<Job<?, ?>> {
 
     private @CheckForNull
     Queue.Item scheduleBuild2(java.util.Map<String, String> messageParameters) {
+        Objects.requireNonNull(job);
         val definedParameters = getDefinedParameters(job);
         val buildParameters = getUpdatedParameters(messageParameters, definedParameters);
         val parametersAction = new ParametersAction(buildParameters);
@@ -308,9 +310,17 @@ public class CamelTrigger extends Trigger<Job<?, ?>> {
         for (ParameterValue def : definedParams) {
             newParams.put(def.getName(), def);
         }
-        for (String key : messageParams.keySet()) {
+        //for (String key : messageParams.keySet()) {
+        //    if (newParams.containsKey(key)) {
+        //        StringParameterValue spv = new StringParameterValue(key, messageParams.get(key));
+        //        newParams.put(key, spv);
+        //    }
+        //}
+        for (val entry: messageParams.entrySet()) {
+            val key = entry.getKey();
+            val value = entry.getValue();
             if (newParams.containsKey(key)) {
-                StringParameterValue spv = new StringParameterValue(key, messageParams.get(key));
+                StringParameterValue spv = new StringParameterValue(key, value);
                 newParams.put(key, spv);
             }
         }

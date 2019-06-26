@@ -143,9 +143,9 @@ public class CamelConfiguration extends GlobalConfiguration {
     }
 
 
-    private static void registerComponents(CamelContext camelContext) throws Exception {
-        registerComponents(camelContext, null);
-    }
+    //private static void registerComponents(CamelContext camelContext) throws Exception {
+    //    registerComponents(camelContext, null);
+    //}
     private static void registerComponents(CamelContext camelContext, ClassLoader[] classLoaders) throws Exception {
         final String componentsPackageName = "org.apache.camel.component";
         final String componentInterfaceName = "org.apache.camel.Component";

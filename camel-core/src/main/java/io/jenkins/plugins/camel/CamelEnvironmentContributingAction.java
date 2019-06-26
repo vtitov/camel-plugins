@@ -6,6 +6,7 @@ import hudson.model.EnvironmentContributingAction;
 import hudson.model.ParameterValue;
 import hudson.model.Run;
 import lombok.extern.java.Log;
+import lombok.val;
 
 import java.util.HashSet;
 import java.util.List;
@@ -78,11 +79,20 @@ public class CamelEnvironmentContributingAction implements EnvironmentContributi
 
         // Only include variables in environment that are not defined as job parameters. And
         // do not overwrite any existing environment variables (like PATH).
-        for (String key : messageParams.keySet()) {
+        //for (String key : messageParams.keySet()) {
+        //    //log.fine("message param: " + key);
+        //    if (!jobParams.contains(key) && !env.containsKey(key)) {
+        //        log.fine(String.format("putting to env message param: [%s] -> [%s]", key, messageParams.get(key)));
+        //        env.put(key, messageParams.get(key));
+        //    }
+        //}
+        for (val entry: messageParams.entrySet()) {
+            val key = entry.getKey();
+            val value = entry.getValue();
             //log.fine("message param: " + key);
             if (!jobParams.contains(key) && !env.containsKey(key)) {
-                log.fine(String.format("putting to env message param: [%s] -> [%s]", key, messageParams.get(key)));
-                env.put(key, messageParams.get(key));
+                log.fine(String.format("putting to env message param: [%s] -> [%s]", key, value));
+                env.put(key, key);
             }
         }
     }
