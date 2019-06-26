@@ -1,0 +1,22 @@
+= README
+:toc:
+:toclevels: 3
+
+== Core Plugin
+
+[source,bash]
+----
+mvn clean install
+----
+
+== Component Plugins
+
+[source,bash]
+----
+( \
+  cd camel-template \
+  && for i in jms kafka ; \
+    do \
+      echo mvn -Dcamel.component.name=${i} clean install || break ; done \
+)
+----
