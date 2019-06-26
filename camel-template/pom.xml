@@ -7,7 +7,7 @@
       <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>${component.artifact.id>}</artifactId>
+    <artifactId>camel-${component.name}</artifactId>
     <packaging>hpi</packaging>
     <properties>
         <camel.component.name>???</camel.component.name>
@@ -16,8 +16,7 @@
         <camel.component.version>${camel.core.version}</camel.component.version>
 
         <component.name>${camel.component.name}</component.name>
-        <component.artifact.id>camel-${component.name}</component.artifact.id>
-        <component.camelized.name>Undefined</component.camelized.name>
+        <component.camelized.name>${component.name}</component.camelized.name>
     </properties>
     <name>jenkins-camel-${component.name}-plugin</name>
     <description>jenkins camel ${component.name} plugin</description>
