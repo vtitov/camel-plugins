@@ -1,0 +1,35 @@
+//package jenkins
+//
+//pipeline() {
+//    agent any
+//    options {
+//        timestamps()
+//    }
+//    parameters {
+//        string defaultValue: 'kafka:localhost:9005?topic=TFS.OUT',
+//            description: 'target endpoint',
+//            name: 'OLD_STYLE_TARGET',
+//            trim: true
+//        string defaultValue: 'kafka:TFS.OUT?brokers=localhost:9005',
+//            description: 'target endpoint',
+//            name: 'TARGET',
+//            trim: true
+//        string defaultValue: 'test message to kafka',
+//            description: 'target endpoint',
+//            name: 'CAMEL_MESSAGE_BODY',
+//            trim: true
+//    }
+//
+//    stages {
+//        stage('Dump Params') {
+//            steps {
+//                sh "date -Ins"
+//                sendCamelMessage messageBody: "${params.CAMEL_MESSAGE_BODY}", to: "${params.TARGET}"
+//                sh "date -Ins"
+//                echo "sent to: ${params.TARGET}"
+//                echo "sent message: ${params.CAMEL_MESSAGE_BODY}"
+//                sh "date -Ins"
+//            }
+//        }
+//    }
+//}

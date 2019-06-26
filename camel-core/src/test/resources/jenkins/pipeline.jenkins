@@ -1,0 +1,38 @@
+//package jenkins
+//
+//pipeline() {
+//    agent any
+//    parameters {
+//        string defaultValue: 'n/a',
+//            description: 'target endpoint',
+//            name: 'TARGET_ENDPOINT',
+//            trim: true
+//        string defaultValue: '',
+//            description: 'target endpoint',
+//            name: 'CAMEL_MESSAGE_BODY',
+//            trim: true
+//    }
+//    triggers {
+//        camelTrigger from: [
+//            //[uri: 'file:camel-files1'],
+//            //[uri: 'kafka:TFS.OUT?brokers=localhost:9005&groupId=jenkins&autoOffsetReset=earliest&offsetRepository=#offsetRepo'],
+//            [uri: 'kafka:TFS.OUT?brokers=localhost:9005&groupId=jenkins&autoOffsetReset=earliest']
+//        ] //, source: 'file:camel-files'
+//    }
+//    //environment {
+//    //}
+//    //options { timestamps() }
+//
+//    stages {
+//        stage('Dump Params') {
+//            steps {
+//                script {
+//                    echo "${params.TARGET_ENDPOINT}"
+//                    echo "${params.CAMEL_MESSAGE_BODY}"
+//                    echo "${env.CAMEL_MESSAGE_BODY}"
+//                }
+//                //echo "test"
+//            }
+//        }
+//    }
+//}

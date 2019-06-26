@@ -1,0 +1,15 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
+    <l:layout title="Project Statistics">
+        <l:main-panel>
+            <h1>
+                Camel Integration
+            </h1>
+            <ul>
+                <li>
+                    Registered Endpoints: ${it.endpointsCount}
+                </li>
+            </ul>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>

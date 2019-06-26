@@ -1,0 +1,14 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:f="/lib/form" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:local="local">
+<l:layout title="${%Pipeline Syntax: Snippet Generator}" norefresh="true">
+    <!--<st:include page="sidepanel"/>-->
+    <l:main-panel>
+        <h1>Camel Integration</h1>
+        <ul>
+            <li>
+                Registered Endpoints: ${it.endpointMap.size()}
+            </li>
+        </ul>
+    </l:main-panel>
+</l:layout>
+</j:jelly>
