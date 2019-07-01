@@ -15,8 +15,11 @@ mvn clean install
 ----
 ( \
   cd camel-template \
-  && for i in jms kafka ; \
+  && rm -rf pom.xml \
+  && for COMP in jms kafka ; \
     do \
-      echo mvn -Dcamel.component.name=${i} clean install || break ; done \
+      sed -e "s#<artifactId>camel-\${component.name}</artifactId>#<artifactId>camel-${COMP}</artifactId>#; s#<camel.component.name>???</camel.component.name>#<camel.component.name>$COMP</camel.component.name>#"  < pom.xml.template > pom-${COMP}.xml \
+      && mvn -Dcamel.component.name=${COMP} -f pom-${COMP}.xml clean install \
+      || break ; done \
 )
 ----
