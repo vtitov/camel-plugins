@@ -146,7 +146,7 @@ public class CamelConfiguration extends GlobalConfiguration {
     //private static void registerComponents(CamelContext camelContext) throws Exception {
     //    registerComponents(camelContext, null);
     //}
-    private static void registerComponents(CamelContext camelContext, ClassLoader[] classLoaders) throws Exception {
+    private static void registerComponents(CamelContext camelContext, ClassLoader[] classLoaders) {
         final String componentsPackageName = "org.apache.camel.component";
         final String componentInterfaceName = "org.apache.camel.Component";
         final List<String> filteredCompinents = List.of(
@@ -178,8 +178,11 @@ public class CamelConfiguration extends GlobalConfiguration {
                             ,simplePackageName
                             ,componentClass.getName()
                         ));
-                        val comp = (Component)componentClass.loadClass().newInstance();
-                        camelContext.addComponent(simplePackageName, comp);
+                        Try.of(() -> {
+                            val comp = (Component) componentClass.loadClass().newInstance();
+                            camelContext.addComponent(simplePackageName, comp);
+                            return true;
+                        }).onFailure(e -> log.log(Level.INFO, String.format("error while registerint component %s", componentClass), e));
                     } else {
                         log.info(String.format("context already has component. simple package name = %s, class = %s"
                             , simplePackageName
