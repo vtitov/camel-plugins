@@ -115,6 +115,7 @@ public class CamelTrigger extends Trigger<Job<?, ?>> {
 
     /** A value of -1 will make sure the quiet period of the job will be used. */
     private static final int RESPECT_JOBS_QUIET_PERIOD = -1;
+    final private Long SLEEP_INTERVAL_AFTER_SUSPEND = 500L;
 
 
     transient private java.util.Collection<RouteDefinition> routesDefinitions = null;
@@ -215,7 +216,7 @@ public class CamelTrigger extends Trigger<Job<?, ?>> {
                         //.bean(messageHandler, "onBody")
                         .bean(messageHandler, "onMessage")
                         //.bean(this, "onBody")
-                        .log("Message received from Kafka : ${body}")
+                        .log("Message received from route [${routeId}]: ${body}")
                         .log("    with header ${headers}")
                     ;
                 } else {
@@ -269,8 +270,16 @@ public class CamelTrigger extends Trigger<Job<?, ?>> {
     private void stopTriggerContext() {
         log.fine(String.format("stopping trigger %s for job %s", this, job) );
         val ctx = CamelConfiguration.get().getCamelContext();
+        Thread t = Thread.currentThread();
+        ClassLoader orig = t.getContextClassLoader();
+        t.setContextClassLoader(CamelTrigger.class.getClassLoader());
         try {
             if(ctx!=null && routesDefinitions !=null && routesDefinitions.size()>0) {
+                List.ofAll(routesDefinitions).forEach(rd ->
+                    Try.of(()->{ctx.suspendRoute(rd.getId()); return true;})
+                        .onFailure(e->log.log(Level.WARNING, String.format("Can't suspend route: [%s]", rd.getId()), e))
+                );
+                Thread.sleep(SLEEP_INTERVAL_AFTER_SUSPEND);
                 ctx.removeRouteDefinitions(routesDefinitions);
                 routesDefinitions.clear();
                 routesDefinitions = null;
@@ -278,6 +287,8 @@ public class CamelTrigger extends Trigger<Job<?, ?>> {
             }
         } catch (Exception e) {
             log.log(Level.WARNING, "Can't remove route definitions: ", e);
+        } finally {
+            t.setContextClassLoader(orig);
         }
     }
 
