@@ -1,8 +1,14 @@
 # Compiled class file
 *.class
 
+# temp files
+camel-template/pom-*.xml
+
 # Log file
 *.log
+*.log.?
+*.log.??
+*.log.*.lck
 
 # BlueJ files
 *.ctxt

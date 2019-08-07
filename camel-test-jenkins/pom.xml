@@ -17,6 +17,8 @@
 
         <component.name>${camel.component.name}</component.name>
         <component.camelized.name>${component.name}</component.camelized.name>
+
+        <jenkins-test-harness.version>2.54</jenkins-test-harness.version>
     </properties>
     <name>jenkins-camel-${component.name}-plugin</name>
     <description>jenkins camel ${component.name} plugin</description>
@@ -99,9 +101,23 @@
 
         <!--plugins for test-->
         <dependency>
+            <groupId>io.jenkins</groupId>
+            <artifactId>configuration-as-code</artifactId>
+            <version>1.26</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jenkins</groupId>
+            <artifactId>configuration-as-code</artifactId>
+            <version>1.26</version>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
+        <dependency>
             <groupId>io.jenkins.plugins</groupId>
             <artifactId>camel-kafka</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.jenkins.plugins</groupId>
@@ -148,10 +164,18 @@
             <optional>true</optional>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jvnet.hudson.plugins</groupId>-->
+            <!--<artifactId>monitoring</artifactId>-->
+            <!--<optional>true</optional>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+
+        <!--other test deps-->
         <dependency>
-            <groupId>org.jvnet.hudson.plugins</groupId>
-            <artifactId>monitoring</artifactId>
-            <optional>true</optional>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
+            <version>1.19.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -176,11 +200,33 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <!--<target unless="maven.test.skip">-->
+                            <target>
+                                <!--<echo>${ctl.db.jar.path}</echo>-->
+                                <mkdir dir="${project.basedir}/logs"/>
+                                <!--<mkdir dir="${surefireTempDir}" />-->
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <rerunFailingTestsCount>0</rerunFailingTestsCount>
+                    <!--<reuseForks>false</reuseForks>-->
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
                     <systemProperties>
                         <property>
                             <name>java.util.logging.config.file</name>
