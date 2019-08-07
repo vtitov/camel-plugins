@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>camel-parent</artifactId>
+      <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>camel-test-jenkins</artifactId>
+    <packaging>hpi</packaging>
+    <properties>
+        <camel.component.name>test-jenkins</camel.component.name>
+        <camel.component.group.id>org.apache.camel</camel.component.group.id>
+        <camel.component.artifact.id>camel-${camel.component.name}</camel.component.artifact.id>
+        <camel.component.version>${camel.core.version}</camel.component.version>
+
+        <component.name>${camel.component.name}</component.name>
+        <component.camelized.name>${component.name}</component.camelized.name>
+    </properties>
+    <name>jenkins-camel-${component.name}-plugin</name>
+    <description>jenkins camel ${component.name} plugin</description>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <!-- If you want this to appear on the wiki page:
+    <developers>
+      <developer>
+        <id>vtitov</id>
+        <name>Valentin Titov</name>
+        <email>vtitov@nowhere.net</email>
+      </developer>
+    </developers> -->
+
+    <!-- Assuming you want to host on @jenkinsci:
+    <url>https://wiki.jenkins.io/display/JENKINS/Camel-${component.camelized.name}+Plugin</url>
+    <scm>
+        <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    </scm>
+    -->
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.jenkins.plugins</groupId>
+                <artifactId>camel-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+
+        <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>${camel.component.group.id}</groupId>-->
+            <!--<artifactId>${camel.component.artifact.id}</artifactId>-->
+            <!--<version>${camel.component.version}</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-test</artifactId>
+            <version>${camel.core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--lombok/delombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--plugins for test-->
+        <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>camel-kafka</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>embedded-kafka</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-aggregator</artifactId>
+            <version>2.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-api</artifactId>
+            <version>2.35</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>support-core</artifactId>
+            <version>2.50</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>timestamper</artifactId>
+            <version>1.9</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mig82</groupId>
+            <artifactId>folder-properties</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--metrics-->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>metrics</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jvnet.hudson.plugins</groupId>
+            <artifactId>monitoring</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>display-info</id>
+                        <configuration>
+                            <rules>
+                                <enforceBytecodeVersion>
+                                    <excludes combine.children="append">
+                                        <exclude>org.projectlombok:lombok</exclude>
+                                    </excludes>
+                                </enforceBytecodeVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <rerunFailingTestsCount>0</rerunFailingTestsCount>
+                    <systemProperties>
+                        <property>
+                            <name>java.util.logging.config.file</name>
+                            <value>src/test/resources/logging.properties</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jenkins-ci.tools</groupId>
+                <artifactId>maven-hpi-plugin</artifactId>
+                <!--<extensions>true</extensions>-->
+                <configuration>
+                    <minimumJavaVersion>1.${java.level}</minimumJavaVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -2,14 +2,15 @@
 :toc:
 :toclevels: 3
 
-== Core Plugin
+== Build
+=== Core Plugin
 
 [source,bash]
 ----
 mvn clean install
 ----
 
-== Component Plugins
+=== Component Plugins
 
 [source,bash]
 ----
@@ -22,4 +23,11 @@ mvn clean install
       && mvn -Dcamel.component.name=${COMP} -f pom-${COMP}.xml clean install \
       || break ; done \
 )
+----
+
+=== Test
+
+[source,bash]
+----
+( cd camel-test-jenkins && mvn verify )
 ----
