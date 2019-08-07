@@ -14,13 +14,13 @@ import static org.junit.Assert.assertTrue;
 
 
 @Log
-public class JenkinsCamelKafaTest {
+public class JenkinsCamelKafkaTest {
 
     @Rule
     public JenkinsRule jenkinsRule;
 
     @Test
-    public void kafkaTriggeredPipelin() throws Exception {
+    public void kafkaTriggeredPipeline() throws Exception {
         // TODO
         assertTrue(true); // FIXME
     }
