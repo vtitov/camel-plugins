@@ -18,7 +18,7 @@
         <java.level>8</java.level>
         <!--<jenkins.version>2.138.3</jenkins.version>-->
         <apache.curator.version>2.13.0</apache.curator.version>
-        <apache.httpcomponents.version>4.5.6</apache.httpcomponents.version>
+        <apache.httpcomponents.version>4.5.13</apache.httpcomponents.version>
         <apache.httpcomponents.httpcore.version>4.4.11</apache.httpcomponents.httpcore.version>
         <jenkins.version>2.60.3</jenkins.version>
         <!--<jenkins.version>2.176-stax2-SNAPSHOT</jenkins.version>-->
